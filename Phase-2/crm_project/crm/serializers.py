@@ -35,3 +35,7 @@ class InteractionSerializer(serializers.ModelSerializer):
         model = Interaction
         fields = ['id', 'contact', 'interaction_date', 'type', 'notes']
         read_only_fields = ['contact']
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)

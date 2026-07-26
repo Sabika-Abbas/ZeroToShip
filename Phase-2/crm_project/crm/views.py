@@ -1,27 +1,30 @@
 from django.shortcuts import render
-
-# Create your views here.
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions
 from django.contrib.auth import authenticate, login
 from .models import Contact, Interaction
-from .serializers import UserSerializer, ContactSerializer, InteractionSerializer
+from .serializers import LoginSerializer, UserSerializer, ContactSerializer, InteractionSerializer
 
 # --- 1. REGISTER ROUTE ---
-class RegisterView(APIView):
-    def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            return Response({"message": "User created successfully!", "user_id": user.id}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class RegisterView(generics.CreateAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
-# --- 2. LOGIN ROUTE ---
-class LoginView(APIView):
-    def post(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
+# --- 2. LOGIN ROUTE (UPDATED with form) ---
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        return Response(self.get_serializer().data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        username = serializer.validated_data['username']
+        password = serializer.validated_data['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
@@ -34,11 +37,9 @@ class ContactListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # GUARD: ONLY return contacts belonging to the logged-in user
         return Contact.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        # GUARD: Automatically assign the new contact to the logged-in user
         serializer.save(user=self.request.user)
 
 # --- 4. CONTACT DETAIL/UPDATE/DELETE (WITH THE "GUARD") ---
@@ -47,5 +48,4 @@ class ContactDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # GUARD: Only allow access to contacts belonging to this user
         return Contact.objects.filter(user=self.request.user)
