@@ -1,24 +1,23 @@
-# Phase 1: Database Schema for Smart Personal CRM
+# Phase 2: Authentication & Authorization
 
 ## What I Built
-The foundational database for a Personal CRM that helps students track professional contacts. 
-I created three interlinked tables:
+This phase adds a secure authentication system and data integrity guards to the Personal CRM API.
 
-- **User** – Stores student account details (extends Django's built-in User).
-- **Contact** – Stores professional contacts, linked to a User.
-- **Interaction** – Stores meeting notes and conversation logs, linked to a Contact.
+## Features
 
-## Tech Stack
-- Django 5.x (Python)
-- SQLite (development database)
+### 1. User Registration (`/api/register/`)
+- Users can create accounts with a username, password, and email.
+- Passwords are securely hashed using Django's built-in `create_user()` method.
 
-## How to Run This Project
+### 2. User Login (`/api/login/`)
+- Users can log in using their username and password.
+- Django creates a session for authenticated users.
 
-1. Clone the repository.
-2. Navigate to `Phase-1/crm_project/`.
-3. Activate the virtual environment:
-   - Windows: `venv\Scripts\activate`
-   - Mac/Linux: `source venv/bin/activate`
-4. Run migrations:
-   ```bash
-   python manage.py migrate
+### 3. Data Integrity Guard 🔒
+- Users can **only** view, edit, or delete contacts that belong to them.
+- When a user creates a new contact, it is automatically assigned to their `user_id`.
+- This is enforced using `get_queryset()` to filter by `request.user`.
+
+```python
+def get_queryset(self):
+    return Contact.objects.filter(user=self.request.user)
