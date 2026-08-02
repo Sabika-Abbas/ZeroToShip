@@ -1,3 +1,4 @@
+/* Global Reset & Background */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,60 +6,102 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #f5f7fa;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
 }
 
 .app {
-  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
+/* ----- HEADER (Premium Dark Gradient) ----- */
 .app-header {
-  background: linear-gradient(135deg, #6C63FF, #4A44D6);
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  padding: 28px 40px;
   color: white;
-  padding: 24px 40px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .app-header h1 {
-  margin: 0;
   font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(to right, #f7971e, #ffd200);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
 }
 
 .app-header p {
-  margin: 4px 0 0;
   opacity: 0.8;
   font-size: 14px;
+  color: #b0b0d0;
+  margin: 0;
 }
 
+/* ----- APP BODY (Split Layout) ----- */
 .app-body {
   display: grid;
-  grid-template-columns: 420px 1fr;
+  grid-template-columns: 400px 1fr;
   gap: 0;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 140px);
+  min-height: 600px;
 }
 
 .gallery-section {
-  background: #f5f7fa;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
   overflow-y: auto;
-  border-right: 1px solid #e0e0e0;
+  padding: 10px;
 }
 
 .workspace-section {
-  background: white;
-  padding: 20px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  padding: 24px;
   overflow-y: auto;
 }
 
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6C63FF, #3F3D9E);
+  border-radius: 10px;
+}
+
+/* Responsive */
 @media (max-width: 1024px) {
   .app-body {
     grid-template-columns: 1fr;
     height: auto;
   }
-  
   .gallery-section {
     border-right: none;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     max-height: 500px;
+  }
+  body {
+    padding: 10px;
   }
 }
