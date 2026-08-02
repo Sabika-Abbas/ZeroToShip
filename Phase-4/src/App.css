@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f5f7fa;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.app-header {
+  background: linear-gradient(135deg, #6C63FF, #4A44D6);
+  color: white;
+  padding: 24px 40px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.app-header p {
+  margin: 4px 0 0;
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+.app-body {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 0;
+  height: calc(100vh - 120px);
+}
+
+.gallery-section {
+  background: #f5f7fa;
+  overflow-y: auto;
+  border-right: 1px solid #e0e0e0;
+}
+
+.workspace-section {
+  background: white;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+  .app-body {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  
+  .gallery-section {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    max-height: 500px;
+  }
+}
